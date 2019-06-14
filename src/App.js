@@ -1,4 +1,4 @@
-import React,{ Component } from 'react';
+import React from 'react';
 import Particles from 'react-particles-js'
 import Navigation from './components/Navigation/Navigation';
 import Clarifai from 'clarifai';
@@ -28,7 +28,7 @@ const particlesOptions = {
 	}
 }
 
-class App extends Component {
+class App extends React.Component {
 	constructor() {
 		super();
 		this.state = {
@@ -37,7 +37,24 @@ class App extends Component {
 			box: {},
 			route: 'signin',
 			isSignedIn: false,
+			user: {
+				id: '',
+				name: '',
+				email: '',
+				entries: 0,
+				joined: ''
+			}
 		}
+	}
+
+	loadUser = (data) => {
+		this.setState({user: {
+			id: data.id,
+			name: data.name,
+			email: data.email,
+			entries: data.entries,
+			joined: data.joined
+		}})
 	}
 
 	calculateFaceLocation = (data) => {
@@ -62,7 +79,6 @@ class App extends Component {
 	onInputChange = (event) => {
 		this.setState({input: event.target.value});
 	}
-
 
 	onButtonSubmit = () => {
 		this.setState({imageUrl: this.state.input})
@@ -102,7 +118,7 @@ class App extends Component {
 	      	: ( 
 	      		route === 'signin' 
 	      		? <SignIn onRouteChange={this.onRouteChange}/>
-	      		: <Register onRouteChange={this.onRouteChange}/>
+	      		: <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
 	      		)
 	    	}
 	    </div>
