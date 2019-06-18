@@ -27,11 +27,18 @@ class SignIn extends React.Component {
 			})
 		})
 			.then(response => response.json())
-			.then(data => {
-				if (data === 'success') {
-					this.props.onRouteChange('home')
+			.then(user => {
+				if(user.id) {
+					this.props.loadUser(user);
+					this.props.onRouteChange('home');
 				}
 		})
+	}
+
+	onEnter = (event) => {
+		if(event.key === 'Enter'){
+			this.onSubmitSignIn()
+		}
 	}
 
 	render() {
@@ -60,6 +67,7 @@ class SignIn extends React.Component {
 				        	name="password"  
 				        	id="password" 
 				        	onChange={this.onPasswordChange}
+				        	onKeyPress={this.onEnter}
 				        />
 				      </div>
 				    </fieldset>
